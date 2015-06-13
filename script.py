@@ -9,8 +9,9 @@ html = f.read()
 f.close()
 print("HTML Input read from file.html")
 subject = raw_input("Input Subject : ")
-from1 = raw_input("Input From : ")
-to = raw_input("Input To : ")
+#to = raw_input("Input To : ")
+to = "kousiksatish@gmail.com,106113051@nitt.edu,106113077@nitt.edu"
+recepients_list = to.split()
 
 out = cStringIO.StringIO()
 writer = MimeWriter.MimeWriter(out)
@@ -35,5 +36,5 @@ out.close()
 print msg
 
 server = smtplib.SMTP("localhost")
-server.sendmail(from1, to, msg)
+server.sendmail('', recepients_list, msg)
 server.quit()
