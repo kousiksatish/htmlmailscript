@@ -2,7 +2,26 @@ import smtplib
 import MimeWriter
 import mimetools
 import cStringIO
+import MySQLdb
 
+HOST = 'localhost'
+USER = 'root'
+PASS = 'kousiksatish'
+DB = 'email'
+
+db=MySQLdb.connect(HOST, USER, PASS, DB);
+cur=db.cursor() 
+cur.execute("SELECT email_id FROM email")
+data = cur.fetchall()
+to = ""
+for dat in data:
+	to += dat[0]
+	to+=", "
+
+to = to[:-2]
+rec_list = to.split(", ")
+cur.close()
+db.close()
 
 f = open("file.html", 'r')
 html = f.read()
@@ -10,8 +29,8 @@ f.close()
 print("HTML Input read from file.html")
 subject = raw_input("Input Subject : ")
 #to = raw_input("Input To : ")
-to = "kousiksatish@gmail.com,106113051@nitt.edu,106113077@nitt.edu"
-recepients_list = to.split()
+#to = "ssundarraj@gmail.com, 106113051@nitt.edu, 106113077@nitt.edu"
+#recepients_list = []
 
 out = cStringIO.StringIO()
 writer = MimeWriter.MimeWriter(out)
@@ -36,5 +55,7 @@ out.close()
 print msg
 
 server = smtplib.SMTP("localhost")
-server.sendmail('', recepients_list, msg)
+for mail in rec_list:
+	server.sendmail('kousiksatih@gmail.com', mail, msg)
+	print "Mail sent to " + mail
 server.quit()
